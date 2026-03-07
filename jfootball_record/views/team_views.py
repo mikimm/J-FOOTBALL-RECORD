@@ -1,8 +1,7 @@
-from django.http import Http404, HttpResponseServerError, JsonResponse
+from django.http import JsonResponse
 from rest_framework import generics
-from django.shortcuts import get_list_or_404, get_object_or_404, render
-from rest_framework.response import Response
-from jfootball_record.exception.exceptions import ExternalAPIError, NotFoundError
+from django.shortcuts import get_list_or_404
+from jfootball_record.exception.exception_handler import hundle_exception
 from jfootball_record.model_definition.teams_models import Teams
 from jfootball_record.serializer.teams_serializer import TeamsSerializer
 from rest_framework.views import APIView
@@ -24,10 +23,6 @@ class TeamDetailView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             output=self.usecase.handle(team_id=self.kwargs['team_id'])
-        except NotFoundError as e:
-            return JsonResponse({"error": str(e)}, status=404)
-        except ExternalAPIError as e:
-            return JsonResponse({"error": str(e)}, status=500)
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return hundle_exception(e)
         return JsonResponse({"output":output})

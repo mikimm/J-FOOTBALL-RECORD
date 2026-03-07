@@ -1,11 +1,6 @@
-
-class AppException(Exception):
+class NotFoundError(Exception):
     pass
 
 
-class NotFoundError(AppException):
-    pass
-
-
-class ExternalAPIError(AppException):
+class ExternalAPIError(Exception):
     pass
