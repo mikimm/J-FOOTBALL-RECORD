@@ -5,4 +5,4 @@ class Comments(models.Model):
     id = models.AutoField(primary_key=True)
     record=models.ForeignKey(MatchRecords,on_delete=models.CASCADE)
     comment=models.CharField(max_length=50)
-    comment_by=models.ForeignKey(Users, on_delete=models.CASCADE,db_column='comment_by')
+    comment_by=models.ForeignKey(Users, on_delete=models.SET_NULL,db_column='comment_by',null=True)
