@@ -1,11 +1,11 @@
 
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from jfootball_record.exception.exceptions import ExternalAPIError, NotFoundError
 from django.core.exceptions import ObjectDoesNotExist
 
 def hundle_exception(exc:Exception) -> JsonResponse:
 
-    if isinstance(exc, NotFoundError) or isinstance(exc, ObjectDoesNotExist):
+    if isinstance(exc, NotFoundError) or isinstance(exc, ObjectDoesNotExist) or isinstance(exc, Http404):
         return JsonResponse({"error": str(exc)}, status=404)
 
     elif isinstance(exc, ExternalAPIError):
