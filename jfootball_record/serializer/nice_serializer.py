@@ -5,15 +5,15 @@ from jfootball_record.model_definition.match_records_models import MatchRecords
 from jfootball_record.model_definition.nice_models import Nice
 from jfootball_record.model_definition.users_models import Users
 
-# Comments用シリアライザー
+# Nice用シリアライザー
 class NiceSerializer(serializers.ModelSerializer):
-    record_id =serializers.IntegerField()
-    post_by_id =serializers.IntegerField()
     class Meta:
         model=Nice
-        fields =  ['record', 'post_by','record_id','post_by_id']
+        fields =  ['record', 'post_by']
         read_only_fields = ['record', 'post_by']
-    def validate(self, data):
+        
+            
+    def check_create(self,data):
             """
             Check Record and User
             """
@@ -27,5 +27,6 @@ class NiceSerializer(serializers.ModelSerializer):
             
             if u.id == m.created_by_id:
                 raise serializers.ValidationError("not permissioned")
-            
+            return data
+        
             

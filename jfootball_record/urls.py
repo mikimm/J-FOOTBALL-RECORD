@@ -11,12 +11,15 @@ from rest_framework.routers import DefaultRouter
 
 au=Team_Adaptor()
 tu = Team_Usecase(au)
-router=DefaultRouter()
-router.register('nice',NiceView)
+nice = NiceView.as_view({"post": "create", "delete": "destroy","get": "list"})
 urlpatterns = [
     path('user', UserView.as_view()),
     path('match_records', MatchRecordsView.as_view()),
     path('comments/<int:match_records_id>', CommentsView.as_view()),
     path('teams/<int:league_id>', TeamListView.as_view()),
     path('teams/detail/<int:team_id>', TeamDetailView.as_view(usecase=tu)),
-]+router.urls
+    path(
+        "records/<int:record_id>/nice/",
+        nice,
+    )
+]
