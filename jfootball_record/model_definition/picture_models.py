@@ -5,6 +5,7 @@ from jfootball_record.model_definition.teams_models import Teams
 from jfootball_record.model_definition.users_models import Users
 
 class Picture(models.Model):
-    id = models.AutoField(primary_key=True)
-    record_id = models.OneToOneField(MatchRecords,on_delete=models.CASCADE)
-    picture_image = models.BinaryField()
+    caption = models.CharField(max_length=255)
+    record = models.OneToOneField(MatchRecords,on_delete=models.CASCADE)
+    picture = models.FileField(upload_to='uploads/') # 保存先を指定
+    uploaded_at = models.DateTimeField(auto_now_add=True) #インスタンスを生成する際に更新される

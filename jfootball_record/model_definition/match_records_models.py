@@ -13,4 +13,4 @@ class MatchRecords(models.Model):
     away_score=models.IntegerField()
     round=models.IntegerField()
     match_day=models.DateField()
-    created_by=models.ForeignKey(Users,on_delete=models.CASCADE,db_column='comment_by')
+    created_by=models.ForeignKey(Users,on_delete=models.CASCADE,db_column='created_by')
