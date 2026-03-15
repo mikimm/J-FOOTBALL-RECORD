@@ -5,5 +5,5 @@ class CommentsView(generics.CreateAPIView):
     serializer_class = CommentsSerializer
 
     def perform_create(self, serializer):
-        match_records_id = self.kwargs['match_records_id']
-        serializer.save(record_id=match_records_id,comment_by_id=1)
+        record_id = self.kwargs['record_id']
+        serializer.save(record_id=record_id,comment_by_id=1)
