@@ -8,17 +8,21 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class MyPagination(PageNumberPagination):
+    REST_FRAMEWORK = {
+        'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+        'PAGE_SIZE': 100
+    }
     page_size = 5
     
-    # def get_paginated_response(self, data):
-    #     return Response({
-    #         'current' :self.page.number,              # 現在のページ
-    #         'count': self.page.paginator.count,       # 項目数の合計
-    #         'final': self. page.paginator.num_pages,  # 全体のページ数
-    #         'next': self.get_next_link(),             # 次のページネーションへのリンク
-    #         'previous': self.get_previous_link(),　　  # 前のページネーションへのリンク
-    #         'results': data,　　                       # 結果データ　（page_size個のデータ）
-    #         })
+    def get_paginated_response(self, data):
+        return Response({
+            'current' :self.page.number,              # 現在のページ
+            'count': self.page.paginator.count,       # 項目数の合計
+            'final': self. page.paginator.num_pages,  # 全体のページ数
+            'next': self.get_next_link(),             # 次のページネーションへのリンク
+            'previous': self.get_previous_link(),  # 前のページネーションへのリンク
+            'results': data,                       # 結果データ　（page_size個のデータ）
+        })
     
 # Create your views here.
 class MatchRecordsViewSet(viewsets.ModelViewSet):
