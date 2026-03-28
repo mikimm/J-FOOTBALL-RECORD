@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from jfootball_record.adaptor.adaptor_protocol import Adaptor
@@ -19,4 +20,5 @@ class Team_Usecase:
             output= self.adaptor.call(team_id= t.api_foot_ball_team_id)
         except Exception as e:
             raise ExternalAPIError(e)
+        
         return output

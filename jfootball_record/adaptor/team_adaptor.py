@@ -8,7 +8,7 @@ class Team_Adaptor():
         "id": {team_id}
         }
         headers = {"x-apisports-key": ""}
-        response = requests.get("https://v3.football.api-sports.io/teams", params=parameter,headers=headers)
+        response = requests.get("https://v3.foqotball.api-sports.io/teams", params=parameter,headers=headers)
         if response.status_code !=200:
             raise Exception(response.json())  
         return_data = {"status": response.status_code, "data": response.json()}     

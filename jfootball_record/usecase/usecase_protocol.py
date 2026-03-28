@@ -5,5 +5,5 @@ class Usecase(Protocol):
 
     adaptor: Adaptor
 
-    def handle(self,**kwargs) -> Any:
+    def handle(self,**kwargs) -> dict:
         ...
