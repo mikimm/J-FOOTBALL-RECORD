@@ -1,0 +1,97 @@
+from dataclasses import dataclass, field ,asdict
+import json
+from typing import Any, Optional
+
+from jfootball_record.adaptor.adaptor_protocol import Adaptor
+from jfootball_record.exception.exceptions import ExternalAPIError
+from jfootball_record.helpers.convert_function import convert_to_dataclass
+
+
+# --- 最下層 ---
+@dataclass
+class Goals:
+    score: int = 0   # "for" は予約語なので score にする
+    against: int = 0
+
+
+@dataclass
+class Stats:
+    played: int = 0
+    win: int = 0
+    draw: int = 0
+    lose: int = 0
+    goals: Goals = field(default_factory=Goals)
+
+
+# --- team ---
+@dataclass
+class Team:
+    id: int = 0
+    name: str = ""
+
+
+# --- standings要素 ---
+@dataclass
+class Standing:
+    rank: int = 0
+    team: Team = field(default_factory=Team)
+    points: int = 0
+    goalsDiff: int = 0
+    group: str = ""
+    form: str = ""
+    description: Optional[str] = None
+
+    all: Stats = field(default_factory=Stats)
+
+
+
+# --- root ---
+@dataclass
+class Response:
+    standings: list[Standing] = field(default_factory=lambda:[Standing()])
+    
+class League_Usecase:
+    def __init__(self,adaptor:Adaptor):
+        self.adaptor = adaptor
+        
+    def handle(self,sort_key:str,order:str,division_id:str,**kwargs) -> dict:
+        try:
+            output= self.adaptor.call(division_id=division_id)
+        except Exception as e:
+            raise ExternalAPIError(e)
+        standings=output["data"]["response"][0]["league"]["standings"][0]
+        #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
+        class_response = convert_to_dataclass(Response,{'standings':standings})
+        
+        #scoreキーに外部APIのall.goals.forの値を代入
+        goals_for_list=[i["all"]["goals"]["for"] for i in standings]
+        for i,cs in enumerate(class_response.standings):
+            cs.all.goals.score=goals_for_list[i]
+        
+        #ソートに紐づくクエリがある場合に実行
+        if sort_key and order:
+            if order == "asc":
+                order = True
+            if order == "desc":
+                order = False
+            if sort_key=="points":
+                class_response.standings.sort(key=lambda x: x.points,reverse=order)
+            elif sort_key=="goalsDiff":
+                class_response.standings.sort(key=lambda x: x.goalsDiff,reverse=order)
+            elif sort_key=="all.win":
+                class_response.standings.sort(key=lambda x: x.all.win,reverse=order)
+            elif sort_key=="all.lose":
+                class_response.standings.sort(key=lambda x: x.all.lose,reverse=order)
+            elif sort_key=="all.draw":
+                class_response.standings.sort(key=lambda x: x.all.draw,reverse=order)
+            elif sort_key=="all.goals.score":
+                class_response.standings.sort(key=lambda x: x.all.goals.score,reverse=order)
+            elif sort_key=="all.goals.against":
+                class_response.standings.sort(key=lambda x: x.all.goals.against,reverse=order)
+            elif sort_key=="rank":
+                class_response.standings.sort(key=lambda x: x.rank,reverse=order)
+        #クラス化したobjを辞書型へ再帰的に変換
+        output=asdict(class_response)
+        return output
+    
+    

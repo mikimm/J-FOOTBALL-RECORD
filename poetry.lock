@@ -151,6 +151,21 @@ files = [
 ]
 
 [[package]]
+name = "dacite"
+version = "1.9.2"
+description = "Simple creation of data classes from dictionaries."
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "dacite-1.9.2-py3-none-any.whl", hash = "sha256:053f7c3f5128ca2e9aceb66892b1a3c8936d02c686e707bee96e19deef4bc4a0"},
+    {file = "dacite-1.9.2.tar.gz", hash = "sha256:6ccc3b299727c7aa17582f0021f6ae14d5de47c7227932c47fec4cdfefd26f09"},
+]
+
+[package.extras]
+dev = ["black", "coveralls", "mypy", "pre-commit", "pylint", "pytest (>=5)", "pytest-benchmark", "pytest-cov"]
+
+[[package]]
 name = "django"
 version = "6.0.2"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -187,6 +202,18 @@ files = [
 django = ">=4.2"
 
 [[package]]
+name = "from-dict"
+version = "0.5.0"
+description = "Create data structures from dictionaries."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "from_dict-0.5.0-py3-none-any.whl", hash = "sha256:6b6656cfddd03726c60bf33f8220e2b6d64f072676a41569ad605ad05bb951a9"},
+    {file = "from_dict-0.5.0.tar.gz", hash = "sha256:87436c029e7bb03a12c4d4b68f7eddecf2fced51724467e8c27db0ef78690251"},
+]
+
+[[package]]
 name = "idna"
 version = "3.11"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -200,6 +227,21 @@ files = [
 
 [package.extras]
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.2"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a"},
+    {file = "python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "requests"
@@ -273,4 +315,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14"
-content-hash = "4fdf32f53cdcc28f94680a73006bd27e62a486a23f6fe100076e9ee21dc9159f"
+content-hash = "5c00d3d2a328d3d5ebf5eb3ca4652361e9251fcd6b6b9180fb0fc54b59943a49"
