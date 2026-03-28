@@ -123,4 +123,4 @@ STATIC_URL = 'static/'
 
 load_dotenv('.env')
 X_API_SPORTS_KEY=os.environ.get('x-apisports-key')
-SEASON=os.environ.get('season',int)
+SEASON=int(os.environ.get('season'))
