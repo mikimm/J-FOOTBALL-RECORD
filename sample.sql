@@ -42,7 +42,7 @@ insert into jfootball_record_teams values (32,295,"サガン鳥栖","https://med
 insert into jfootball_record_teams values (33,284,"湘南ベルマーレ","https://media.api-sports.io/football/teams/284.png",2);
 insert into jfootball_record_teams values (34,10409,"テゲバジャーロ宮崎","https://media.api-sports.io/football/teams/10409.png",2);
 insert into jfootball_record_teams values (35,7145,"栃木シティ","https://media.api-sports.io/football/teams/7145.png",2);
-insert into jfootball_record_teams values (36,22,"徳島ヴォルティス","https://media.api-sports.io/football/teams/22.png",2);
+insert into jfootball_record_teams values (36,299,"徳島ヴォルティス","https://media.api-sports.io/football/teams/299.png",2);
 insert into jfootball_record_teams values (37,4326,"ヴァンラーレ八戸","https://media.api-sports.io/football/teams/4326.png",2);
 insert into jfootball_record_teams values (38,286,"べガルダ仙台","https://media.api-sports.io/football/teams/286.png",2);
 insert into jfootball_record_teams values (39,308,"ヴァンフォーレ甲府","https://media.api-sports.io/football/teams/308.png",2);
