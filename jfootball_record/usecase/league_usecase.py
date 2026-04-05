@@ -2,7 +2,7 @@ from dataclasses import dataclass, field ,asdict
 import json
 from typing import Any, Optional
 
-from jfootball_record.adaptor.adaptor_protocol import Adaptor
+from jfootball_record.adaptor.adaptor import Adaptor
 from jfootball_record.exception.exceptions import ExternalAPIError
 from jfootball_record.helpers.convert_function import convert_to_dataclass
 
@@ -51,12 +51,10 @@ class Response:
     standings: list[Standing] = field(default_factory=lambda:[Standing()])
     
 class League_Usecase:
-    def __init__(self,adaptor:Adaptor):
-        self.adaptor = adaptor
         
     def handle(self,sort_key:str,order:str,division_id:str,**kwargs) -> dict:
         try:
-            output= self.adaptor.call(division_id=division_id)
+            output= Adaptor.get_ranking(division_id=division_id)
         except Exception as e:
             raise ExternalAPIError(e)
         standings=output["data"]["response"][0]["league"]["standings"][0]

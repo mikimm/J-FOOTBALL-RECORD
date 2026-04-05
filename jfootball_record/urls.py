@@ -1,7 +1,5 @@
 
 from django.urls import path
-from jfootball_record.adaptor.team_adaptor import Team_Adaptor
-from jfootball_record.adaptor.league_adaptor import League_Adaptor
 from jfootball_record.usecase.team_usecase import Team_Usecase
 from jfootball_record.usecase.league_usecase import League_Usecase
 from jfootball_record.views.picture_views import PictureView
@@ -13,10 +11,8 @@ from jfootball_record.views.comments_views import CommentsView
 from jfootball_record.views.nice_views import NiceView
 from rest_framework.routers import DefaultRouter
 
-ta=Team_Adaptor()
-la=League_Adaptor()
-tu = Team_Usecase(ta)
-lu= League_Usecase(la)
+tu = Team_Usecase()
+lu= League_Usecase()
 router = DefaultRouter()
 router.register('records',MatchRecordsViewSet)
 urlpatterns = [
