@@ -73,10 +73,7 @@ class League_Usecase:
             cs.team.image=team[1]
         #ソートに紐づくクエリがある場合に実行
         if sort_key and order:
-            if order == "asc":
-                order = True
-            if order == "desc":
-                order = False
+            order = True if order ==  "asc" else False
             class_response.standings.sort(key=attrgetter(sort_key),reverse=order)
         #クラス化したobjを辞書型へ再帰的に変換
         output=asdict(class_response)
