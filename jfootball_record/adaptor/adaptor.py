@@ -12,18 +12,18 @@ class Adaptor():
         return_data = {"status": response.status_code, "data": response.json()}     
         return return_data
     @classmethod
-    def get_ranking(self,**kwargs) -> Any:
+    def get_ranking(cs,**kwargs) -> Any:
         division_id=kwargs["division_id"]
         parameter = {
         "league": division_id,
         "season": SEASON 
         }
-        return self.call_api("https://v3.football.api-sports.io/standings",parameter)
+        return cs.call_api("https://v3.football.api-sports.io/standings",parameter)
     @classmethod
-    def get_team(self,**kwargs) -> Any:
+    def get_team(cs,**kwargs) -> Any:
         team_id=kwargs["team_id"]
         parameter = {
         "id": {team_id}
         }
-        return self.call_api("https://v3.football.api-sports.io/teams",parameter)
+        return cs.call_api("https://v3.football.api-sports.io/teams",parameter)
     
