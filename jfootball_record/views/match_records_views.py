@@ -4,8 +4,9 @@ from jfootball_record.exception.exception_handler import hundle_exception
 from jfootball_record.model_definition.match_records_models import MatchRecords
 from jfootball_record.serializer.match_records_serializer import MatchRecordsSerializer
 from rest_framework.pagination import PageNumberPagination
-from django_filters.rest_framework import DjangoFilterBackend,FilterSet
+import django_filters
 
+from django_filters.rest_framework import DjangoFilterBackend
 
 class MyPagination(PageNumberPagination):
     REST_FRAMEWORK = {
@@ -23,7 +24,12 @@ class MyPagination(PageNumberPagination):
             'results': data,                       # 結果データ　（page_size個のデータ）
         })
 
+class MatchRecordsFilter(django_filters.FilterSet):
+    title = django_filters.CharFilter(lookup_expr="icontains")
 
+    class Meta:
+        model = MatchRecords
+        fields = ["title"]
     
 # Create your views here.
 class MatchRecordsViewSet(viewsets.ModelViewSet):
@@ -34,8 +40,8 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
     #pagenation設定
     pagination_class = MyPagination
     #filtering設定
-    filter_backends = [filters.SearchFilter,filters.OrderingFilter]
-    search_fields=['title']
+    filter_backends = [DjangoFilterBackend,filters.OrderingFilter]
+    filterset_class = MatchRecordsFilter
     ordering_fields = ['round']
     def perform_create(self, serializer):
         serializer.save(created_by_id=self.user_id)
