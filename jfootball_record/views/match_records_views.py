@@ -1,10 +1,10 @@
-from rest_framework import viewsets,status
+from rest_framework import filters, viewsets,status
 from rest_framework.response import Response
 from jfootball_record.exception.exception_handler import hundle_exception
 from jfootball_record.model_definition.match_records_models import MatchRecords
 from jfootball_record.serializer.match_records_serializer import MatchRecordsSerializer
 from rest_framework.pagination import PageNumberPagination
-
+from django_filters.rest_framework import DjangoFilterBackend,FilterSet
 
 
 class MyPagination(PageNumberPagination):
@@ -13,7 +13,6 @@ class MyPagination(PageNumberPagination):
         'PAGE_SIZE': 100
     }
     page_size = 5
-    
     def get_paginated_response(self, data):
         return Response({
             'current' :self.page.number,              # 現在のページ
@@ -23,6 +22,8 @@ class MyPagination(PageNumberPagination):
             'previous': self.get_previous_link(),  # 前のページネーションへのリンク
             'results': data,                       # 結果データ　（page_size個のデータ）
         })
+
+
     
 # Create your views here.
 class MatchRecordsViewSet(viewsets.ModelViewSet):
@@ -30,7 +31,12 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
     queryset = MatchRecords.objects.all()
     #TODO:user_idの取得方法
     user_id=2
+    #pagenation設定
     pagination_class = MyPagination
+    #filtering設定
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter]
+    search_fields=['title']
+    ordering_fields = ['round']
     def perform_create(self, serializer):
         serializer.save(created_by_id=self.user_id)
 
@@ -67,3 +73,8 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+    #後ほどhome_team_idとaway_team_idからチーム名を取得するため,listメソッドを定義
+    def list(self, request, *args, **kwargs):
+        return super().list(self,request, *args, **kwargs)
+                #TODO superで継承元のlistメソッド呼び出し後の取得結果を加工
