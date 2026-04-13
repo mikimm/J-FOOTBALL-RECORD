@@ -14,7 +14,7 @@ class TeamListView(generics.ListAPIView):
     def get_queryset(self):
         # URLからリーグIDを取得してフィルタ
         league_id = self.kwargs['league_id']
-        return get_list_or_404(Teams, league_id=league_id)
+        return Teams.objects.filter(league_id=league_id)
 
 
 class TeamDetailView(APIView):
