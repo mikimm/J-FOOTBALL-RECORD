@@ -80,7 +80,6 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    #後ほどhome_team_idとaway_team_idからチーム名を取得するため,listメソッドを定義
     def list(self, request, *args, **kwargs):
         response=super().list(self,request, *args, **kwargs)
         results=response.data["results"]
