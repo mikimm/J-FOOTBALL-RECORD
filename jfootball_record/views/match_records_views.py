@@ -2,11 +2,11 @@ from rest_framework import filters, viewsets,status
 from rest_framework.response import Response
 from jfootball_record.exception.exception_handler import hundle_exception
 from jfootball_record.model_definition.match_records_models import MatchRecords
+from jfootball_record.model_definition.teams_models import Teams
 from jfootball_record.serializer.match_records_serializer import MatchRecordsSerializer
 from rest_framework.pagination import PageNumberPagination
-import django_filters
-
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import FilterSet,CharFilter
+from django_filters.rest_framework import DjangoFilterBackend 
 
 class MyPagination(PageNumberPagination):
     REST_FRAMEWORK = {
@@ -24,8 +24,8 @@ class MyPagination(PageNumberPagination):
             'results': data,                       # 結果データ　（page_size個のデータ）
         })
 
-class MatchRecordsFilter(django_filters.FilterSet):
-    title = django_filters.CharFilter(lookup_expr="icontains")
+class MatchRecordsFilter(FilterSet):
+    title = CharFilter(lookup_expr="icontains")
 
     class Meta:
         model = MatchRecords
@@ -82,5 +82,23 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
 
     #後ほどhome_team_idとaway_team_idからチーム名を取得するため,listメソッドを定義
     def list(self, request, *args, **kwargs):
-        return super().list(self,request, *args, **kwargs)
-                #TODO superで継承元のlistメソッド呼び出し後の取得結果を加工
+        response=super().list(self,request, *args, **kwargs)
+        results=response.data["results"]
+        if len(results) == 0:
+            return response
+        all_teams_list=Teams.objects.all()
+        for result in results:
+            for team in all_teams_list:
+                if not ("home_team_name" in result
+                        and "away_team_name" in result
+                        and "home_team_logo" in result
+                        and "away_team_logo" in result):
+                    if result["home_team_id"] == team.id:
+                        result.update(home_team_name=team.team_name)
+                        result.update(home_team_logo=team.team_logo)
+                    elif result["away_team_id"] == team.id:
+                        result.update(away_team_name=team.team_name) 
+                        result.update(away_team_logo=team.team_logo)
+                else:
+                    break
+        return response
