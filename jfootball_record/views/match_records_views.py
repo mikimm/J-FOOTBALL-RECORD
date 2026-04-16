@@ -43,6 +43,14 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter]
     filterset_class = MatchRecordsFilter
     ordering_fields = ['round']
+    #辞書更新プライベートメソッド
+    def _update_dict(self,target:dict,add_data:dict):
+        if not(type(target) is  dict and type(add_data) is dict):
+            TypeError("target and add_data must be dict")
+        for key in add_data.keys():
+            target.update({key:add_data[key]})
+        
+        
     def perform_create(self, serializer):
         serializer.save(created_by_id=self.user_id)
 
@@ -93,11 +101,9 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
                         and "home_team_logo" in result
                         and "away_team_logo" in result):
                     if result["home_team_id"] == team.id:
-                        result.update(home_team_name=team.team_name)
-                        result.update(home_team_logo=team.team_logo)
+                        self._update_dict(result,{"home_team_name":team.team_name,"home_team_logo":team.team_logo})
                     elif result["away_team_id"] == team.id:
-                        result.update(away_team_name=team.team_name) 
-                        result.update(away_team_logo=team.team_logo)
+                        self._update_dict(result,{"away_team_name":team.team_name,"away_team_logo":team.team_logo})
                 else:
                     break
         return response
