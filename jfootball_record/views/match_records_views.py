@@ -47,8 +47,7 @@ class MatchRecordsViewSet(viewsets.ModelViewSet):
     def _update_dict(self,target:dict,add_data:dict):
         if not(type(target) is  dict and type(add_data) is dict):
             TypeError("target and add_data must be dict")
-        for key in add_data.keys():
-            target.update({key:add_data[key]})
+        target.update(add_data)
         
         
     def perform_create(self, serializer):
