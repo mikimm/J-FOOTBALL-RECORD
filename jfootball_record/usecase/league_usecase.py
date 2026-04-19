@@ -15,7 +15,7 @@ class Goals:
     score: int = 0   # "for" は予約語なので score にする
     against: int = 0
 
-
+# --- stats要素 ---
 @dataclass
 class Stats:
     played: int = 0
@@ -25,7 +25,7 @@ class Stats:
     goals: Goals = field(default_factory=Goals)
 
 
-# --- team ---
+# --- team要素 ---
 @dataclass
 class Team:
     id: int = 0
@@ -47,11 +47,10 @@ class Standing:
     all: Stats = field(default_factory=Stats)
 
 
-
 # --- root ---
 @dataclass
 class Response:
-    standings: list[Standing] = field(default_factory=lambda:[Standing()])
+    standings: list[Standing] = field(default_factory=[Standing])
     
 class League_Usecase:
         

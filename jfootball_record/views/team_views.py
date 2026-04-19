@@ -25,4 +25,4 @@ class TeamDetailView(APIView):
             output=self.usecase.handle(team_id=self.kwargs['team_id'])
         except Exception as e:
             return hundle_exception(e)
-        return JsonResponse({"output":output})
+        return JsonResponse(output)

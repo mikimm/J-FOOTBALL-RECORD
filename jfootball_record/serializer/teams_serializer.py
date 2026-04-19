@@ -6,4 +6,4 @@ from jfootball_record.model_definition.teams_models import Teams
 class TeamsSerializer(serializers.ModelSerializer):
     class Meta:
         model=Teams
-        fields = ['team_name', 'team_logo']
+        fields = ['id','team_name', 'team_logo']

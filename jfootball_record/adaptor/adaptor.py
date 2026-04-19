@@ -26,4 +26,11 @@ class Adaptor():
         "id": {team_id}
         }
         return cs.call_api("https://v3.football.api-sports.io/teams",parameter)
+    @classmethod
+    def get_squads(cs,**kwargs) -> Any:
+        team_id=kwargs["team_id"]
+        parameter = {
+        "team": {team_id}
+        }
+        return cs.call_api("https://v3.football.api-sports.io/players/squads?",parameter)
     
