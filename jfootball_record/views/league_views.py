@@ -44,4 +44,4 @@ class LeagueRankingView(APIView):
             output=self.usecase.handle(sort_key,order,division_id)
         except Exception as e:
             return hundle_exception(e)
-        return JsonResponse({"output":output})
+        return JsonResponse(output)

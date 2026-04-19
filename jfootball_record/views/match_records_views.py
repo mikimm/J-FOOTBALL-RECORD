@@ -21,7 +21,7 @@ class MyPagination(PageNumberPagination):
             'final': self. page.paginator.num_pages,  # 全体のページ数
             'next': self.get_next_link(),             # 次のページネーションへのリンク
             'previous': self.get_previous_link(),  # 前のページネーションへのリンク
-            'results': data,                       # 結果データ　（page_size個のデータ）
+            'results': data,                       # 結果データ（page_size個のデータ）
         })
 
 class MatchRecordsFilter(FilterSet):
