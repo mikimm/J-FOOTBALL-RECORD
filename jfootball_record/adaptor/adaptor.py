@@ -12,7 +12,7 @@ class Adaptor():
         return_data = {"status": response.status_code, "data": response.json()}     
         return return_data
     @classmethod
-    def get_ranking(cs,**kwargs) -> Any:
+    def get_ranking(cs,**kwargs) -> dict:
         division_id=kwargs["division_id"]
         parameter = {
         "league": division_id,
@@ -21,7 +21,7 @@ class Adaptor():
         output=cs._call_api("https://v3.football.api-sports.io/standings",parameter)
         return output["data"]["response"][0]["league"]["standings"][0]
     @classmethod
-    def get_team(cs,**kwargs) -> Any:
+    def get_team(cs,**kwargs) -> dict:
         team_id=kwargs["team_id"]
         parameter = {
         "id": {team_id}
@@ -29,7 +29,7 @@ class Adaptor():
         output=cs._call_api("https://v3.football.api-sports.io/teams",parameter)
         return output["data"]["response"][0]
     @classmethod
-    def get_squads(cs,**kwargs) -> Any:
+    def get_squads(cs,**kwargs) -> dict:
         team_id=kwargs["team_id"]
         parameter = {
         "team": {team_id}
@@ -38,7 +38,7 @@ class Adaptor():
         output["data"]["response"][0].pop("team")
         return output["data"]["response"][0]
     @classmethod
-    def get_players(cs,**kwargs) -> Any:
+    def get_players(cs,**kwargs) -> dict:
         player_id=kwargs["player_id"]
         parameter = {
         "id": {player_id},
