@@ -1,12 +1,12 @@
 from django.http import JsonResponse
 from rest_framework import generics
-from django.shortcuts import get_list_or_404
 from jfootball_record.exception.exception_handler import hundle_exception
 from jfootball_record.model_definition.teams_models import Teams
 from jfootball_record.serializer.teams_serializer import TeamsSerializer
 from rest_framework.views import APIView
 
-from jfootball_record.usecase.usecase_protocol import Usecase
+from jfootball_record.usecase.team_usecase import team_usecase_handle
+
 # Create your views here.
 class TeamListView(generics.ListAPIView):
     serializer_class = TeamsSerializer
@@ -18,11 +18,10 @@ class TeamListView(generics.ListAPIView):
 
 
 class TeamDetailView(APIView):
-    usecase :Usecase = None   # ← クラス属性として定義
         
     def get(self, request, *args, **kwargs):
         try:
-            output=self.usecase.handle(team_id=self.kwargs['team_id'])
+            output=team_usecase_handle(team_id=self.kwargs['team_id'])
         except Exception as e:
             return hundle_exception(e)
         return JsonResponse(output)

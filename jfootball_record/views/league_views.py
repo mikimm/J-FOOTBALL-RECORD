@@ -2,7 +2,8 @@ from django.http import JsonResponse
 from jfootball_record.exception.exception_handler import hundle_exception
 from rest_framework.views import APIView
 from rest_framework import status
-from jfootball_record.usecase.usecase_protocol import Usecase
+
+from jfootball_record.usecase.league_usecase import league_usecase_handle
 # Create your views here.
 
 allow_pattern=[
@@ -26,7 +27,6 @@ allow_pattern=[
 
 allow_division=[98,99,100]
 class LeagueRankingView(APIView):
-    usecase :Usecase = None   # ← クラス属性として定義
         
     def get(self, request, *args, **kwargs):
         division_id=kwargs["division_id"]
@@ -41,7 +41,7 @@ class LeagueRankingView(APIView):
             sort_key=self.request.GET["sort"]
             order=self.request.GET["order"]
         try:
-            output=self.usecase.handle(sort_key,order,division_id)
+            output=league_usecase_handle(sort_key,order,division_id)
         except Exception as e:
             return hundle_exception(e)
         return JsonResponse(output)

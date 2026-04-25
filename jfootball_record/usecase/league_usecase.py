@@ -52,29 +52,28 @@ class Standing:
 class Response:
     standings: list[Standing] = field(default_factory=[Standing])
     
-class League_Usecase:
         
-    def handle(self,sort_key:str,order:str,division_id:str,**kwargs) -> dict:
-        try:
-            output= Adaptor.get_ranking(division_id=division_id)
-        except Exception as e:
-            raise ExternalAPIError(e)
-        #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
-        class_response = convert_to_dataclass(Response,{'standings':output})
-        
-        #scoreキーに外部APIのall.goals.forの値を代入
-        goals_for_list=[i["all"]["goals"]["for"] for i in output]
-        for i,cs in enumerate(class_response.standings):
-            cs.all.goals.score=goals_for_list[i]
-            team=Teams.objects.values_list('team_name', 'team_logo').get(api_foot_ball_team_id=cs.team.id)
-            cs.team.name=team[0]
-            cs.team.image=team[1]
-        #ソートに紐づくクエリがある場合に実行
-        if sort_key and order:
-            order = True if order ==  "asc" else False
-            class_response.standings.sort(key=attrgetter(sort_key),reverse=order)
-        #クラス化したobjを辞書型へ再帰的に変換
-        output=asdict(class_response)
-        return output
+def league_usecase_handle(sort_key:str,order:str,division_id:str) -> dict:
+    try:
+        output= Adaptor.get_ranking(division_id=division_id)
+    except Exception as e:
+        raise ExternalAPIError(e)
+    #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
+    class_response = convert_to_dataclass(Response,{'standings':output})
+    
+    #scoreキーに外部APIのall.goals.forの値を代入
+    goals_for_list=[i["all"]["goals"]["for"] for i in output]
+    for i,cs in enumerate(class_response.standings):
+        cs.all.goals.score=goals_for_list[i]
+        team=Teams.objects.values_list('team_name', 'team_logo').get(api_foot_ball_team_id=cs.team.id)
+        cs.team.name=team[0]
+        cs.team.image=team[1]
+    #ソートに紐づくクエリがある場合に実行
+    if sort_key and order:
+        order = True if order ==  "asc" else False
+        class_response.standings.sort(key=attrgetter(sort_key),reverse=order)
+    #クラス化したobjを辞書型へ再帰的に変換
+    output=asdict(class_response)
+    return output
     
     

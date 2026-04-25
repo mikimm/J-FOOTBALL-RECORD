@@ -38,26 +38,25 @@ class Response:
     team: Team = field(default_factory=Team)
     venue: Venue = field(default_factory=Team)
     
-class Team_Usecase:
         
-    def handle(self,**kwargs) -> Any:
-        team_id=kwargs['team_id']
-        try:
-            t=Teams.objects.get(id=team_id)
-        except Teams.DoesNotExist:
-             raise NotFoundError("team not found")
-        try:
-            output= Adaptor.get_team(team_id= t.api_foot_ball_team_id)
-        except Exception as e:
-            raise ExternalAPIError(e)
-        #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
-        class_response = convert_to_dataclass(Response,output)
-        class_response.team.name=t.team_name
-        #クラス化したobjを辞書型へ再帰的に変換
-        output=asdict(class_response)
-        try:
-            squads= Adaptor.get_squads(team_id= t.api_foot_ball_team_id)
-        except Exception as e:
-            raise ExternalAPIError(e)
-        output.update(squads)
-        return output
+def team_usecase_handle(**kwargs) -> dict:
+    team_id=kwargs['team_id']
+    try:
+        t=Teams.objects.get(id=team_id)
+    except Teams.DoesNotExist:
+            raise NotFoundError("team not found")
+    try:
+        output= Adaptor.get_team(team_id= t.api_foot_ball_team_id)
+    except Exception as e:
+        raise ExternalAPIError(e)
+    #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
+    class_response = convert_to_dataclass(Response,output)
+    class_response.team.name=t.team_name
+    #クラス化したobjを辞書型へ再帰的に変換
+    output=asdict(class_response)
+    try:
+        squads= Adaptor.get_squads(team_id= t.api_foot_ball_team_id)
+    except Exception as e:
+        raise ExternalAPIError(e)
+    output.update(squads)
+    return output
