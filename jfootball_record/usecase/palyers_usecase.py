@@ -21,9 +21,8 @@ class Players_Usecase:
             output= Adaptor.get_squads(team_id= t.api_foot_ball_team_id)
         except Exception as e:
             raise ExternalAPIError(e)
-        players=output["data"]["response"][0]["players"]
         exist_flag=False
-        for player in players:
+        for player in output["players"]:
             if player["id"] == player_id:
                 exist_flag=True
                 break
@@ -34,6 +33,5 @@ class Players_Usecase:
                 output= Adaptor.get_players(player_id= player_id)
             except Exception as e:
                 raise ExternalAPIError(e)
-            output=output["data"]["response"][0]
         return output
     

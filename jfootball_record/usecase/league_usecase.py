@@ -59,12 +59,11 @@ class League_Usecase:
             output= Adaptor.get_ranking(division_id=division_id)
         except Exception as e:
             raise ExternalAPIError(e)
-        standings=output["data"]["response"][0]["league"]["standings"][0]
         #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
-        class_response = convert_to_dataclass(Response,{'standings':standings})
+        class_response = convert_to_dataclass(Response,{'standings':output})
         
         #scoreキーに外部APIのall.goals.forの値を代入
-        goals_for_list=[i["all"]["goals"]["for"] for i in standings]
+        goals_for_list=[i["all"]["goals"]["for"] for i in output]
         for i,cs in enumerate(class_response.standings):
             cs.all.goals.score=goals_for_list[i]
             team=Teams.objects.values_list('team_name', 'team_logo').get(api_foot_ball_team_id=cs.team.id)

@@ -50,9 +50,8 @@ class Team_Usecase:
             output= Adaptor.get_team(team_id= t.api_foot_ball_team_id)
         except Exception as e:
             raise ExternalAPIError(e)
-        response=output["data"]["response"][0]
         #取得した辞書型をResponseオブジェクトに変換。Responseオブジェクトに存在しないキーは変換の対象にならない。
-        class_response = convert_to_dataclass(Response,response)
+        class_response = convert_to_dataclass(Response,output)
         class_response.team.name=t.team_name
         #クラス化したobjを辞書型へ再帰的に変換
         output=asdict(class_response)
@@ -60,6 +59,5 @@ class Team_Usecase:
             squads= Adaptor.get_squads(team_id= t.api_foot_ball_team_id)
         except Exception as e:
             raise ExternalAPIError(e)
-        squads["data"]["response"][0].pop("team")
-        output.update(squads["data"]["response"][0])
+        output.update(squads)
         return output

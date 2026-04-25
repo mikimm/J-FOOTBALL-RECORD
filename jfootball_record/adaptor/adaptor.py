@@ -18,21 +18,25 @@ class Adaptor():
         "league": division_id,
         "season": SEASON 
         }
-        return cs._call_api("https://v3.football.api-sports.io/standings",parameter)
+        output=cs._call_api("https://v3.football.api-sports.io/standings",parameter)
+        return output["data"]["response"][0]["league"]["standings"][0]
     @classmethod
     def get_team(cs,**kwargs) -> Any:
         team_id=kwargs["team_id"]
         parameter = {
         "id": {team_id}
         }
-        return cs._call_api("https://v3.football.api-sports.io/teams",parameter)
+        output=cs._call_api("https://v3.football.api-sports.io/teams",parameter)
+        return output["data"]["response"][0]
     @classmethod
     def get_squads(cs,**kwargs) -> Any:
         team_id=kwargs["team_id"]
         parameter = {
         "team": {team_id}
         }
-        return cs._call_api("https://v3.football.api-sports.io/players/squads?",parameter)
+        output=cs._call_api("https://v3.football.api-sports.io/players/squads?",parameter)
+        output["data"]["response"][0].pop("team")
+        return output["data"]["response"][0]
     @classmethod
     def get_players(cs,**kwargs) -> Any:
         player_id=kwargs["player_id"]
@@ -40,5 +44,6 @@ class Adaptor():
         "id": {player_id},
         "season": 2025
         }
-        return cs._call_api("https://v3.football.api-sports.io/players/?",parameter)
+        output=cs._call_api("https://v3.football.api-sports.io/players/?",parameter)
+        return output["data"]["response"][0]
     
